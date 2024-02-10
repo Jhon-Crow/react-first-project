@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import Counter from "./components/Counter";
 import ClassCounter from "./components/ClassCounter";
+import './styles/app.css'
+import PostItem from "./components/PostItem";
 
 function App() {
     const [likes, setLikes] = useState(5);
@@ -16,16 +18,12 @@ function App() {
 
   return (
     <div className="App">
-        <ClassCounter/>
-      {/*  <h1>{likes}</h1>*/}
-      {/*  <h1>{value}</h1>*/}
-      {/*  <input*/}
-      {/*      type='text'*/}
-      {/*      value={value}*/}
-      {/*      onChange={event => setValue(event.target.value)} //связали состояние со значением в интуте*/}
-      {/*  />*/}
-      {/*<button onClick={increment}>Increm</button>*/}
-      {/*<button onClick={decrement}>Deccrem</button>*/}
+        <PostItem/>
+
+
+
+
+
     </div>
   );
 }
