@@ -4,6 +4,7 @@ import ClassCounter from "./components/ClassCounter";
 import './styles/app.css'
 import PostItem from "./components/PostItem";
 import Postlist from "./components/Postlist";
+import MyButton from "./components/UI/button/MyButton";
 
 function App() {
     const [posts, setPosts] = useState([ //передаём массив объектов
@@ -35,8 +36,17 @@ function App() {
 
   return (
     <div className="App">
-        <Postlist posts={posts} title='title TEST 1'/>
-        <Postlist posts={posts2} title='title TEST 2'/>
+        <form>
+            <input type='text' placeholder='Name'/>
+            <input type='text' placeholder='discr'/>
+            <MyButton>OK</MyButton>
+        </form>
+
+
+
+
+        {/*<Postlist posts={posts} title='title TEST 1'/>*/}
+        {/*<Postlist posts={posts2} title='title TEST 2'/>*/}
 
 
 
