@@ -5,6 +5,7 @@ import './styles/app.css'
 import PostItem from "./components/PostItem";
 import Postlist from "./components/Postlist";
 import MyButton from "./components/UI/button/MyButton";
+import MyInput from "./components/UI/input/MyInput";
 
 function App() {
     const [posts, setPosts] = useState([ //передаём массив объектов
@@ -22,6 +23,12 @@ function App() {
         {id: 5, title: '2222222222', body: '2222 (from props.post.body)'}
     ])
 
+    const [title, setTitle] = useState('')
+    const addNewPost = (e) => {
+        e.preventDefault()
+        console.log(title)
+    }
+
 
     // const [likes, setLikes] = useState(5);
     // const [value, setValue] = useState('inp txt ') //значение, передать новое значение
@@ -37,9 +44,17 @@ function App() {
   return (
     <div className="App">
         <form>
-            <input type='text' placeholder='Name'/>
-            <input type='text' placeholder='discr'/>
-            <MyButton>OK</MyButton>
+            {/*управляемый компонент, тайтл зависит от константы выше*/}
+            <MyInput
+                value={title}
+                onChange={e => setTitle(e.target.value)}
+                // при изменении значение цели передаётся в состояние title
+                type='text'
+                placeholder='Name'/>
+            <MyInput
+                type='text'
+                placeholder='discr'/>
+            <MyButton onClick={addNewPost}>OK</MyButton>
         </form>
 
 

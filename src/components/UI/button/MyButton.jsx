@@ -3,7 +3,7 @@ import classes from './MyButton.module.css' //импортируем объек�
 
 const MyButton = ({children, ...props}) => {
     return (
-        <button className={classes.myBtn}>
+        <button {...props} className={classes.myBtn}>
         {/*    импортированный стиль как свойство объекта*/}
         {/*/!*    {props.children}*!/ или*/}
             {children}
