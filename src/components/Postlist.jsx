@@ -8,9 +8,9 @@ const Postlist = ({posts, title}) => {
                 {title}
             </h1>
             {/*берём массив posts, через мап обращаемся к каждому элементу и перобразуем в реакт элемент*/}
-            {posts.map(post =>
+            {posts.map((post, index) =>
                 // обязательно указать key - уникальный статичный ключ
-                <PostItem post={post} key={post.id}/>
+                <PostItem number={index + 1} post={post} key={post.id}/>
             )}
         </div>
     );
