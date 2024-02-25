@@ -1,7 +1,7 @@
 import React from 'react';
 import PostItem from "./PostItem";
 
-const Postlist = ({posts, title}) => {
+const Postlist = ({posts, title, remove}) => {
     return (
         <div>
             <h1 style={{textAlign: "center"}}>
@@ -10,7 +10,7 @@ const Postlist = ({posts, title}) => {
             {/*берём массив posts, через мап обращаемся к каждому элементу и перобразуем в реакт элемент*/}
             {posts.map((post, index) =>
                 // обязательно указать key - уникальный статичный ключ
-                <PostItem number={index + 1} post={post} key={post.id}/>
+                <PostItem remove={remove} number={index + 1} post={post} key={post.id}/>
             )}
         </div>
     );
