@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useMemo, useRef, useState} from 'react';
 import Counter from "./components/Counter";
 import ClassCounter from "./components/ClassCounter";
 import './styles/app.css'
@@ -17,18 +17,23 @@ function App() {
 
     const [selectedSort, setSelectedSort] = useState('')
 
-    function getSortedPosts(selectedSort){
+
+
+    const sortedPosts = useMemo(() => {
         if(selectedSort){
             console.log('selectedSort')
-            return [...posts].sort((a,b) => a[selectedSort].localeCompare(b[selectedSort()]))
+            return [...posts].sort((a,b) => a[selectedSort].localeCompare(b[selectedSort]))
         }
         return posts;
-    }
 
-    const sortedPosts = getSortedPosts()
+    }, [selectedSort, posts]    )  //если зависимость поменяет значение вызывает колбек (сохранает сортированный чтоб оптимизировать)
     const createPost = (newPost)=> {
         setPosts([...posts, newPost])
     }
+
+
+
+
 
     const removePost = (post) => {
         setPosts(posts.filter(p => p.id !== post.id))
@@ -40,6 +45,12 @@ function App() {
     }
 
     const [searchQuery, setSearchQuery] = useState('')
+
+
+    const sortedAndSearchedPosts = useMemo(() => {
+        return sortedPosts.filter(post => post.title.toLowerCase().includes(searchQuery)) //ВНИМАНИЕ так делается поиск
+    }, [searchQuery, sortedPosts])
+
 
   return (
     <div className="App">
@@ -72,8 +83,8 @@ function App() {
             {/*</select>*/}
         </div>
 
-        {posts.length
-            ? <Postlist remove={removePost} posts={sortedPosts} title={'Список постов'}/>
+        {sortedAndSearchedPosts.length
+            ? <Postlist remove={removePost} posts={sortedAndSearchedPosts} title={'Список постов'}/>
             : <h1 style={{textAlign: 'center'}}>
                 Posts not finde
         </h1>
