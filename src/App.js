@@ -8,87 +8,71 @@ import MyButton from "./components/UI/button/MyButton";
 import MyInput from "./components/UI/input/MyInput";
 import PostForm from "./components/PostForm";
 import MySelect from "./components/UI/select/MySelect";
+import PostFilter from "./components/PostFilter.jsx";
+import MyModal from "./components/UI/MyModal/MyModal.jsx";
+// import * as querystring from "querystring";
 
 function App() {
     const [posts, setPosts] = useState([ //передаём массив объектов
-
     ])
 
 
-    const [selectedSort, setSelectedSort] = useState('')
+    // const [selectedSort, setSelectedSort] = useState('')
+    // const [searchQuery, setSearchQuery] = useState('')
 
-
+    const [filter, setFilter] = useState({sort: '', query: ''})
+    const [modal, setModal] = useState(false);
 
     const sortedPosts = useMemo(() => {
-        if(selectedSort){
+        if(filter.sort){
             console.log('selectedSort')
-            return [...posts].sort((a,b) => a[selectedSort].localeCompare(b[selectedSort]))
+            return [...posts].sort((a,b) => a[filter.sort].localeCompare(b[filter.sort]))
         }
         return posts;
 
-    }, [selectedSort, posts]    )  //если зависимость поменяет значение вызывает колбек (сохранает сортированный чтоб оптимизировать)
+    }, [filter.sort, posts]    )  //если зависимость поменяет значение вызывает колбек (сохранает сортированный чтоб оптимизировать)
     const createPost = (newPost)=> {
         setPosts([...posts, newPost])
+        setModal(false)
     }
-
-
-
-
 
     const removePost = (post) => {
         setPosts(posts.filter(p => p.id !== post.id))
     }
 
-    const sortPosts = (sort) => {
-        setSelectedSort(sort);
-        setPosts([...posts].sort((a,b) => a[sort].localeCompare(b[sort]))) //мутируем копию, сравниваем строки
-    }
-
-    const [searchQuery, setSearchQuery] = useState('')
-
+    // const sortPosts = (sort) => {
+    //     setSelectedSort(sort);
+    //     setPosts([...posts].sort((a,b) => a[sort].localeCompare(b[sort]))) //мутируем копию, сравниваем строки
+    // }
 
     const sortedAndSearchedPosts = useMemo(() => {
-        return sortedPosts.filter(post => post.title.toLowerCase().includes(searchQuery)) //ВНИМАНИЕ так делается поиск
-    }, [searchQuery, sortedPosts])
-
+        return sortedPosts.filter(post => post.title.toLowerCase().includes(filter.query)) //ВНИМАНИЕ так делается поиск
+    }, [filter.query, sortedPosts])
 
   return (
     <div className="App">
+        <MyButton style={{marginTop: '2rem'}} onClick={() => setModal(true)}>
+            Create post
+        </MyButton>
+
+        <MyModal visible={modal} setVisible={setModal}>
+            <PostForm create={createPost}/>
+        </MyModal>
 
         {/*<Postlist posts={posts} title='title TEST 1'/>*/}
         {/*<Postlist posts={posts2} title='title TEST 2'/>*/}
 
 
-        <PostForm create={createPost}/>
-
         <hr style={{margin: '15px 0'}}/>
-        <div>
-            <MyInput
-                value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
-                placeholder={'Search'}
-            />
-            <MySelect
-                value={selectedSort}
-                onChange={sortPosts}
-            defaultValue='Sort by...'
-            option={[
-                {value:'title', name: 'By name'},
-                {value:'body', name: 'By discription'}
-            ]}
-            />
-            {/*<select>*/}
-            {/*    <option value={'value1'}>По описанию</option>*/}
-            {/*    <option value={'value2'}>По названию</option>*/}
-            {/*</select>*/}
-        </div>
 
-        {sortedAndSearchedPosts.length
-            ? <Postlist remove={removePost} posts={sortedAndSearchedPosts} title={'Список постов'}/>
-            : <h1 style={{textAlign: 'center'}}>
-                Posts not finde
-        </h1>
-        }
+        <PostFilter
+            filter={filter}
+            setFilter={setFilter}
+        />
+
+        {<Postlist remove={removePost} posts={sortedAndSearchedPosts} title={'Список постов'}/>}
+
+
         {/*<Postlist remove={removePost} posts={posts}/>*/}
 
         {/*берём массив posts, через мап обращаемся к каждому элементу и перобразуем в реакт элемент*/}
@@ -100,7 +84,6 @@ function App() {
 
         {/*<PostItem post={{id: 1, title: 'JS (from props)', body: 'description (from props.post.body)'}}/>*/}
     {/*   пропс выше можно использовать в самом PostItem (он как бы и так внутри) */}
-
     </div>
 
   );
