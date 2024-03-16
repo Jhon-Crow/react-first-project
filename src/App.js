@@ -10,6 +10,7 @@ import PostForm from "./components/PostForm";
 import MySelect from "./components/UI/select/MySelect";
 import PostFilter from "./components/PostFilter.jsx";
 import MyModal from "./components/UI/MyModal/MyModal.jsx";
+import {usePosts} from "./hooks/usePosts";
 // import * as querystring from "querystring";
 
 function App() {
@@ -23,14 +24,14 @@ function App() {
     const [filter, setFilter] = useState({sort: '', query: ''})
     const [modal, setModal] = useState(false);
 
-    const sortedPosts = useMemo(() => {
-        if(filter.sort){
-            console.log('selectedSort')
-            return [...posts].sort((a,b) => a[filter.sort].localeCompare(b[filter.sort]))
-        }
-        return posts;
-
-    }, [filter.sort, posts]    )  //если зависимость поменяет значение вызывает колбек (сохранает сортированный чтоб оптимизировать)
+    // const sortedPosts = useMemo(() => {
+    //     if(filter.sort){
+    //         console.log('selectedSort')
+    //         return [...posts].sort((a,b) => a[filter.sort].localeCompare(b[filter.sort]))
+    //     }
+    //     return posts;
+    //
+    // }, [filter.sort, posts])  //если зависимость поменяет значение вызывает колбек (сохранает сортированный чтоб оптимизировать)
     const createPost = (newPost)=> {
         setPosts([...posts, newPost])
         setModal(false)
@@ -45,9 +46,13 @@ function App() {
     //     setPosts([...posts].sort((a,b) => a[sort].localeCompare(b[sort]))) //мутируем копию, сравниваем строки
     // }
 
-    const sortedAndSearchedPosts = useMemo(() => {
-        return sortedPosts.filter(post => post.title.toLowerCase().includes(filter.query)) //ВНИМАНИЕ так делается поиск
-    }, [filter.query, sortedPosts])
+    // const sortedAndSearchedPosts = useMemo(() => {
+    //     return sortedPosts.filter(post => post.title.toLowerCase().includes(filter.query)) //ВНИМАНИЕ так делается поиск
+    // }, [filter.query, sortedPosts])
+
+    //код выше заменён хуком sortedAndSearchedPosts
+
+    const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
 
   return (
     <div className="App">
