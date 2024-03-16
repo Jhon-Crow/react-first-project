@@ -11,6 +11,7 @@ import MySelect from "./components/UI/select/MySelect";
 import PostFilter from "./components/PostFilter.jsx";
 import MyModal from "./components/UI/MyModal/MyModal.jsx";
 import {usePosts} from "./hooks/usePosts";
+import axios from "axios";
 // import * as querystring from "querystring";
 
 function App() {
@@ -37,6 +38,12 @@ function App() {
         setModal(false)
     }
 
+
+async function fetchPosts() {
+        const response = await axios.get('https://jsonplaceholder.typicode.com/posts')
+        setPosts(response.data) //передаётм в posts
+    }
+
     const removePost = (post) => {
         setPosts(posts.filter(p => p.id !== post.id))
     }
@@ -56,10 +63,10 @@ function App() {
 
   return (
     <div className="App">
+        <MyButton onClick={fetchPosts}>GET POSTS</MyButton>
         <MyButton style={{marginTop: '2rem'}} onClick={() => setModal(true)}>
             Create post
         </MyButton>
-
         <MyModal visible={modal} setVisible={setModal}>
             <PostForm create={createPost}/>
         </MyModal>

@@ -14,6 +14,8 @@ export const useSortedPosts = (posts, sort) => {
 }
 
 export const usePosts = (posts, sort, query) => {
+    // const response = fetchPosts();
+    // posts = [...posts, response]
     const sortedPosts = useSortedPosts(posts, sort)
     const sortedAndSearchedPosts = useMemo(() => {
         return sortedPosts.filter(post => post.title.toLowerCase().includes(query)) //ВНИМАНИЕ так делается поиск
