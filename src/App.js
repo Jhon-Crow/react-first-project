@@ -1,4 +1,4 @@
-import React, {useMemo, useRef, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import Counter from "./components/Counter";
 import ClassCounter from "./components/ClassCounter";
 import './styles/app.css'
@@ -33,11 +33,17 @@ function App() {
     //     return posts;
     //
     // }, [filter.sort, posts])  //если зависимость поменяет значение вызывает колбек (сохранает сортированный чтоб оптимизировать)
+
+    useEffect(() => { // колбек
+        fetchPosts()
+        console.log('us eff')
+    }, []) //массив зависимостей, так как пуст срабатывает единожды вначале
+
+
     const createPost = (newPost)=> {
         setPosts([...posts, newPost])
         setModal(false)
     }
-
 
 async function fetchPosts() {
         const response = await axios.get('https://jsonplaceholder.typicode.com/posts')
