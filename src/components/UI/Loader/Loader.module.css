@@ -1,0 +1,25 @@
+.loader {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 2rem dotted yellowgreen;
+    animation: 2s loading ease-in-out infinite;
+    /*box-shadow: 0 0 0 1px rgba(154, 205, 50, 0.06);*/
+
+    filter: drop-shadow(0 0 .7rem rgba(154, 205, 50, 0.83));
+}
+
+@keyframes loading {
+    0% {
+        transform: rotate(120deg)
+        scale(0.8);
+    }
+    50%{
+        transform: rotate(240deg)
+        scale(1.2);
+    }
+    100%{
+        transform: rotate(360deg)
+        scale(0.8);
+    }
+}

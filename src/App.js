@@ -12,19 +12,17 @@ import PostFilter from "./components/PostFilter.jsx";
 import MyModal from "./components/UI/MyModal/MyModal.jsx";
 import {usePosts} from "./hooks/usePosts";
 import axios from "axios";
+import PostService from "./API/PostService";
+import Loader from "./components/UI/Loader/Loader";
 // import * as querystring from "querystring";
 
 function App() {
     const [posts, setPosts] = useState([ //передаём массив объектов
     ])
-
-
     // const [selectedSort, setSelectedSort] = useState('')
     // const [searchQuery, setSearchQuery] = useState('')
-
     const [filter, setFilter] = useState({sort: '', query: ''})
     const [modal, setModal] = useState(false);
-
     // const sortedPosts = useMemo(() => {
     //     if(filter.sort){
     //         console.log('selectedSort')
@@ -33,12 +31,11 @@ function App() {
     //     return posts;
     //
     // }, [filter.sort, posts])  //если зависимость поменяет значение вызывает колбек (сохранает сортированный чтоб оптимизировать)
+    const [isPostsLoading, setIsPostsLoading] = useState(false); //идёт загрузка
 
     useEffect(() => { // колбек
         fetchPosts()
-        console.log('us eff')
     }, []) //массив зависимостей, так как пуст срабатывает единожды вначале
-
 
     const createPost = (newPost)=> {
         setPosts([...posts, newPost])
@@ -46,8 +43,15 @@ function App() {
     }
 
 async function fetchPosts() {
-        const response = await axios.get('https://jsonplaceholder.typicode.com/posts')
-        setPosts(response.data) //передаётм в posts
+        setIsPostsLoading(true);
+        setTimeout(async ()=>{
+            const posts = await PostService.getAll();
+            setPosts(posts) //передаётм в posts
+            setIsPostsLoading(false);
+        }, 5000)
+        // const posts = await PostService.getAll();
+        //setPosts(posts) //передаётм в posts
+        // setIsPostsLoading(false);
     }
 
     const removePost = (post) => {
@@ -88,7 +92,12 @@ async function fetchPosts() {
             setFilter={setFilter}
         />
 
-        {<Postlist remove={removePost} posts={sortedAndSearchedPosts} title={'Список постов'}/>}
+        {isPostsLoading
+            ?  <div style={{display: 'flex', justifyContent: 'center', marginTop: '1rem'} }><Loader/></div>
+            :  <Postlist remove={removePost} posts={sortedAndSearchedPosts} title={'Список постов'}/>
+        }
+
+
 
 
         {/*<Postlist remove={removePost} posts={posts}/>*/}
