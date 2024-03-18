@@ -10,10 +10,11 @@ import PostForm from "./components/PostForm";
 import MySelect from "./components/UI/select/MySelect";
 import PostFilter from "./components/PostFilter.jsx";
 import MyModal from "./components/UI/MyModal/MyModal.jsx";
-import {usePosts} from "./hooks/usePosts";
+import {usePosts} from "./hooks/usePosts.js";
 import axios from "axios";
 import PostService from "./API/PostService";
 import Loader from "./components/UI/Loader/Loader";
+import {useFetching} from "./hooks/useFetching.js";
 // import * as querystring from "querystring";
 
 function App() {
@@ -31,7 +32,11 @@ function App() {
     //     return posts;
     //
     // }, [filter.sort, posts])  //если зависимость поменяет значение вызывает колбек (сохранает сортированный чтоб оптимизировать)
-    const [isPostsLoading, setIsPostsLoading] = useState(false); //идёт загрузка
+    // const [isPostsLoading, setIsPostsLoading] = useState(false); //идёт загрузка
+    const [fetchPosts, isPostsLoading, postError] = useFetching(async () => {
+        const posts = await PostService.getAll();
+        setPosts(posts) //передаётм в posts
+    } )
 
     useEffect(() => { // колбек
         fetchPosts()
@@ -42,17 +47,17 @@ function App() {
         setModal(false)
     }
 
-async function fetchPosts() {
-        setIsPostsLoading(true);
-        setTimeout(async ()=>{
-            const posts = await PostService.getAll();
-            setPosts(posts) //передаётм в posts
-            setIsPostsLoading(false);
-        }, 5000)
+// async function fetchPosts() {
+//         setIsPostsLoading(true);
+        // setTimeout(async ()=>{
+        //     const posts = await PostService.getAll();
+        //     setPosts(posts) //передаётм в posts
+        //     setIsPostsLoading(false);
+        // }, 5000)
         // const posts = await PostService.getAll();
         //setPosts(posts) //передаётм в posts
         // setIsPostsLoading(false);
-    }
+    // }
 
     const removePost = (post) => {
         setPosts(posts.filter(p => p.id !== post.id))
