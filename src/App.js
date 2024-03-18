@@ -16,6 +16,7 @@ import PostService from "./API/PostService";
 import Loader from "./components/UI/Loader/Loader";
 import {useFetching} from "./hooks/useFetching.js";
 import {getPageCount, getPagesArray} from "./utils/pages.js";
+import Pagination from "./components/UI/pagimation/Pagination.jsx";
 // import * as querystring from "querystring";
 
 function App() {
@@ -44,7 +45,7 @@ function App() {
         setTotalPages(getPageCount(totalCount, limit))
     })
     //переписать далее с useMemo()
-    let pagesArray = getPagesArray(totalPages)
+    // let pagesArray = getPagesArray(totalPages)
 
     useEffect(() => { // колбек
         fetchPosts()
@@ -134,15 +135,7 @@ function App() {
         {/*<PostItem post={{id: 1, title: 'JS (from props)', body: 'description (from props.post.body)'}}/>*/}
     {/*   пропс выше можно использовать в самом PostItem (он как бы и так внутри) */}
 
-        <div className='page-wrapper'>
-            {pagesArray.map(p =>
-                    // проверка если элемент итерации map =
-                    <span
-                        onClick={() => changePage(p)}
-                        key={p} className={page === p ? 'page page_current' : 'page'}>
-                        {p}</span>
-            )}
-        </div>
+    <Pagination page={page} changePage={changePage} totalPages={totalPages} />
 
     </div>
 
