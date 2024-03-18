@@ -15,6 +15,7 @@ import axios from "axios";
 import PostService from "./API/PostService";
 import Loader from "./components/UI/Loader/Loader";
 import {useFetching} from "./hooks/useFetching.js";
+import {getPageCount, getPagesArray} from "./utils/pages.js";
 // import * as querystring from "querystring";
 
 function App() {
@@ -24,6 +25,9 @@ function App() {
     // const [searchQuery, setSearchQuery] = useState('')
     const [filter, setFilter] = useState({sort: '', query: ''})
     const [modal, setModal] = useState(false);
+    const [totalPages, setTotalPages] = useState(0); //щетчик стр
+    const [limit, setLimit] = useState(10);
+    const [page, setPage] = useState(1);
     // const sortedPosts = useMemo(() => {
     //     if(filter.sort){
     //         console.log('selectedSort')
@@ -34,13 +38,17 @@ function App() {
     // }, [filter.sort, posts])  //если зависимость поменяет значение вызывает колбек (сохранает сортированный чтоб оптимизировать)
     // const [isPostsLoading, setIsPostsLoading] = useState(false); //идёт загрузка
     const [fetchPosts, isPostsLoading, postError] = useFetching(async () => {
-        const posts = await PostService.getAll();
-        setPosts(posts) //передаётм в posts
-    } )
+        const response = await PostService.getAll(limit, page);
+        setPosts(response.data) //передаётм в posts
+        const totalCount = response.headers['x-total-count']//общее кол во постов и стр
+        setTotalPages(getPageCount(totalCount, limit))
+    })
+    //переписать далее с useMemo()
+    let pagesArray = getPagesArray(totalPages)
 
     useEffect(() => { // колбек
         fetchPosts()
-    }, []) //массив зависимостей, так как пуст срабатывает единожды вначале
+    }, [page]) //массив зависимостей,
 
     const createPost = (newPost)=> {
         setPosts([...posts, newPost])
@@ -76,6 +84,12 @@ function App() {
 
     const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
 
+    const changePage = (page) => {
+        setPage(page)
+        // fetchPosts() //в нём указана зависимость от page
+    }
+
+
   return (
     <div className="App">
         <MyButton onClick={fetchPosts}>GET POSTS</MyButton>
@@ -96,6 +110,9 @@ function App() {
             filter={filter}
             setFilter={setFilter}
         />
+        {/*проверка на ошибку*/}
+        {postError &&
+            <h1>ERROR! ${postError}</h1>}
 
         {isPostsLoading
             ?  <div style={{display: 'flex', justifyContent: 'center', marginTop: '1rem'} }><Loader/></div>
@@ -116,6 +133,17 @@ function App() {
 
         {/*<PostItem post={{id: 1, title: 'JS (from props)', body: 'description (from props.post.body)'}}/>*/}
     {/*   пропс выше можно использовать в самом PostItem (он как бы и так внутри) */}
+
+        <div className='page-wrapper'>
+            {pagesArray.map(p =>
+                    // проверка если элемент итерации map =
+                    <span
+                        onClick={() => changePage(p)}
+                        key={p} className={page === p ? 'page page_current' : 'page'}>
+                        {p}</span>
+            )}
+        </div>
+
     </div>
 
   );
