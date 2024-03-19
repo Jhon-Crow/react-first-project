@@ -3,9 +3,18 @@ import {Navigate, Route, Routes} from "react-router-dom";
 
 import {privateRoutes, publicRoutes} from "../router/routes.js";
 import {AuthContext} from "../context/context.js";
+import Loader from "./UI/Loader/Loader";
 
 const AppRouter = () => {
-    const {isAuth, setIsAuth} = useContext(AuthContext)
+    const {isAuth, isLoading} = useContext(AuthContext)
+
+    if(isLoading){
+        return <Loader/>
+    }
+
+
+
+
     return (
         isAuth
         ?   <Routes>
@@ -28,11 +37,6 @@ const AppRouter = () => {
                         key={route.path}
                     />
                 )}
-
-                {/*<Route path='/about' element={<About/>} />*/}
-                {/*<Route exect path='/posts' element={<Posts/>} />*/}
-                {/*<Route exect path='/posts/:id' element={<PostIdPage/>}/>*/}
-                {/*<Route path='/error' element={<Error/>} />*/}
                 <Route path='*' element={<Navigate to="/login" />} /> {/* Add a default redirect */}
             </Routes>
     );
