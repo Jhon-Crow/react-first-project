@@ -12,9 +12,6 @@ const AppRouter = () => {
         return <Loader/>
     }
 
-
-
-
     return (
         isAuth
         ?   <Routes>

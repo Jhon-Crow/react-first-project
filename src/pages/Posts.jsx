@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import '../styles/App.css'
 import Postlist from "../components/Postlist";
 import MyButton from "../components/UI/button/MyButton";
@@ -11,6 +11,8 @@ import Loader from "../components/UI/Loader/Loader";
 import {useFetching} from "../hooks/useFetching.js";
 import {getPageCount} from "../utils/pages.js";
 import Pagination from "../components/UI/pagimation/Pagination.jsx";
+import {useObserver} from "../hooks/useObserver";
+import MySelect from "../components/UI/select/MySelect";
 
 function Posts() {
     const [posts, setPosts] = useState([
@@ -20,16 +22,25 @@ function Posts() {
     const [totalPages, setTotalPages] = useState(0); //щетчик стр
     const [limit, setLimit] = useState(10);
     const [page, setPage] = useState(1);
+    const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
     const [fetchPosts, isPostsLoading, postError] = useFetching(async () => {
-        const response = await PostService.getAll(limit, page);
-        setPosts(response.data) //передаётм в posts
-        const totalCount = response.headers['x-total-count']//общее кол во постов и стр
+    const response = await PostService.getAll(limit, page);
+    setPosts([...posts, ...response.data]) //передаётм в posts
+        // развернули страые и новые стр в новый массив
+    const totalCount = response.headers['x-total-count']//общее кол во постов и стр
         setTotalPages(getPageCount(totalCount, limit))
+    })
+    const lastElement = useRef() //получаем посл элем
+
+
+
+    useObserver(lastElement, page < totalPages, isPostsLoading, () => {
+        setPage(page + 1)
     })
 
     useEffect(() => { // колбек
-        fetchPosts()
-    }, [page]) //массив зависимостей,
+        fetchPosts(limit, page)
+    }, [page, limit]) //массив зависимостей,
 
     const createPost = (newPost)=> {
         setPosts([...posts, newPost])
@@ -40,7 +51,7 @@ function Posts() {
         setPosts(posts.filter(p => p.id !== post.id))
     }
 
-    const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
+
 
     const changePage = (page) => {
         setPage(page)
@@ -59,14 +70,27 @@ function Posts() {
                 filter={filter}
                 setFilter={setFilter}
             />
+            <MySelect value={limit}
+            onChange={value => setLimit(value)}
+                      defaultValue='Max num of elems on page'
+                      option={[
+                          {value: 5, name: '5'},
+                          {value: 10, name: '10'},
+                          {value: 25, name: '25'},
+                          {value: -1, name: 'Show All'},
+                      ]}
+            />
             {postError &&
                 <h1>ERROR! ${postError}</h1>}
-
-            {isPostsLoading
-                ?  <div style={{display: 'flex', justifyContent: 'center', marginTop: '1rem'} }><Loader/></div>
-                :  <Postlist remove={removePost} posts={sortedAndSearchedPosts} title={'Список постов'}/>
+            <Postlist remove={removePost} posts={sortedAndSearchedPosts} title={'Список постов'}/>
+            <div ref={lastElement} style={{height: 20, background: 'red'}}></div>
+            {isPostsLoading &&
+                  <div style={{display: 'flex', justifyContent: 'center', marginTop: '1rem'} }><Loader/></div>
             }
-            <Pagination page={page} changePage={changePage} totalPages={totalPages} />
+            <Pagination
+                page={page}
+                changePage={changePage}
+                totalPages={totalPages} />
         </div>
     );
 }
