@@ -3,7 +3,7 @@ import React from 'react';
 const About = () => {
     return (
         <h1>
-            срисовал всё из видео
+            Учебный проект по React
         </h1>
     );
 };

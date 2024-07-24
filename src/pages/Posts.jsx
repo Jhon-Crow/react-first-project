@@ -83,7 +83,7 @@ function Posts() {
             {postError &&
                 <h1>ERROR! ${postError}</h1>}
             <Postlist remove={removePost} posts={sortedAndSearchedPosts} title={'Список постов'}/>
-            <div ref={lastElement} style={{height: 20, background: 'red'}}></div>
+            <div ref={lastElement} style={{height: 20}}></div>
             {isPostsLoading &&
                   <div style={{display: 'flex', justifyContent: 'center', marginTop: '1rem'} }><Loader/></div>
             }
