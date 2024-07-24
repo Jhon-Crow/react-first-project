@@ -16,7 +16,6 @@ const Postlist = ({posts, title, remove}) => {
                 {title}
             </h1>
 
-
             {/*делаем анимацию с помощью транзшн*/}
             <TransitionGroup>
                 {posts.map((post, index) =>
@@ -29,9 +28,7 @@ const Postlist = ({posts, title, remove}) => {
                     <PostItem remove={remove} number={index + 1} post={post}/>
                     </CSSTransition>
                         )}
-
             </TransitionGroup>
-
 
             {/*берём массив posts, через мап обращаемся к каждому элементу и перобразуем в реакт элемент*/}
 
