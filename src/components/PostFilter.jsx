@@ -19,10 +19,6 @@ const PostFilter = ({filter, setFilter}) => {
                     {value:'body', name: 'By discription'}
                 ]}
             />
-            {/*<select>*/}
-            {/*    <option value={'value1'}>По описанию</option>*/}
-            {/*    <option value={'value2'}>По названию</option>*/}
-            {/*</select>*/}
         </div>
     );
 };

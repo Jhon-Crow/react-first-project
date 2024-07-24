@@ -29,12 +29,14 @@ const PostIdPage = () => {
                 ? <Loader/>
                 : <h1>{post.id}. {post.title}</h1>
             }
+            {error && <h1>Error! Can't load posts</h1>}
             <h1>
                 Comments
             </h1>
             {isCommLoading
             ? <Loader/>
             : <div>
+                    {commError && <h1>Error! Can't load comments</h1>}
                     {comments.map(comm =>
                         <div key={comm.id} style={{marginTop: '20px'}}>
                             <h5>{comm.email}</h5>

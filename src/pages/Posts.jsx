@@ -32,8 +32,6 @@ function Posts() {
     })
     const lastElement = useRef() //получаем посл элем
 
-
-
     useObserver(lastElement, page < totalPages, isPostsLoading, () => {
         setPage(page + 1)
     })
@@ -51,14 +49,11 @@ function Posts() {
         setPosts(posts.filter(p => p.id !== post.id))
     }
 
-
-
     const changePage = (page) => {
         setPage(page)
     }
     return (
         <div className="App">
-            <MyButton onClick={fetchPosts}>GET POSTS</MyButton>
             <MyButton style={{marginTop: '2rem'}} onClick={() => setModal(true)}>
                 Create post
             </MyButton>

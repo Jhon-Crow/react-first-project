@@ -5,7 +5,7 @@ import {AuthContext} from "../context/context";
 
 const Login = () => {
 
-    const {isAuth, setIsAuth} = useContext(AuthContext)
+    const {setIsAuth} = useContext(AuthContext)
     const login = event => {
         event.preventDefault();
         setIsAuth(true)
@@ -16,9 +16,11 @@ const Login = () => {
         <div>
             <h1>Log in on this page!</h1>
             <form onSubmit={login}>
-                <MyInput type='text' placeholder='Login'/>
-                <MyInput type='password' placeholder='Password'/>
-                <MyButton>Sing in</MyButton>
+                <MyInput type='text' placeholder='Login' initialInputValue={'root'} />
+                <MyInput type='password' placeholder='Password' initialInputValue={'root'} />
+                <MyButton>
+                    Log in
+                </MyButton>
             </form>
         </div>
     );

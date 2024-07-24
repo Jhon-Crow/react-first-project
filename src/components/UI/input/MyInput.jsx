@@ -1,9 +1,28 @@
-import React from 'react';
+import React, {useState} from 'react';
 import classes from './MyInput.module.css';
 
 const MyInput = React.forwardRef((props, ref) => {
+    const {
+        initialInputValue,
+        ...otherProps
+    } = props;
+
+    const [textValue, setTextValue] = useState('' || initialInputValue)
+
+    const onTextChange = (e) => {
+        setTextValue(e.target.value)
+        console.log(textValue)
+    }
+
+
     return (
-        <input ref={ref} className={classes.myInput} {...props}/>
+        <input
+            onChange={onTextChange}
+            ref={ref}
+            className={classes.myInput}
+            value={textValue}
+            {...otherProps}
+        />
     );
 });
 

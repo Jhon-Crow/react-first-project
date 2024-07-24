@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'; // Import 'Navigate' for redirection
+import {BrowserRouter} from 'react-router-dom';
 import Navbar from './components/UI/Navbar/Navbar';
 import AppRouter from "./components/AppRouter.jsx";
 import {AuthContext} from "./context/context.js";
