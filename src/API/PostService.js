@@ -8,7 +8,6 @@ export default class PostService {
                     _page: page
                 }
             })
-            // return response.data //посты
             return response
     }
 

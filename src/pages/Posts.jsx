@@ -23,22 +23,42 @@ function Posts() {
     const [limit, setLimit] = useState(10);
     const [page, setPage] = useState(1);
     const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
+
     const [fetchPosts, isPostsLoading, postError] = useFetching(async () => {
     const response = await PostService.getAll(limit, page);
     setPosts([...posts, ...response.data]) //передаётм в posts
-        // развернули страые и новые стр в новый массив
+        // развернули старые и новые стр в новый массив
     const totalCount = response.headers['x-total-count']//общее кол во постов и стр
         setTotalPages(getPageCount(totalCount, limit))
     })
+
+
     const lastElement = useRef() //получаем посл элем
 
-    useObserver(lastElement, page < totalPages, isPostsLoading, () => {
+    useObserver(lastElement, page <= totalPages, isPostsLoading, () => {
         setPage(page + 1)
+        fetchPosts(limit, page)
+        // console.log(totalPages,page)
+        // console.log(totalPages)
+        // console.log(posts)
     })
 
     useEffect(() => { // колбек
+        setPosts([]);
+        setPage(1)
         fetchPosts(limit, page)
-    }, [page, limit]) //массив зависимостей,
+        // console.log(limit,page)
+        // console.log(posts)
+    }, [limit]) //массив зависимостей,
+
+    // useEffect(() => {
+    //     setPosts([]);
+    //     setPage(1);
+    //     if (page!== 1) {
+    //         changePage(1);
+    //     }
+    //     fetchPosts(limit, page)
+    // }, [limit])
 
     const createPost = (newPost)=> {
         setPosts([...posts, newPost])
@@ -50,7 +70,9 @@ function Posts() {
     }
 
     const changePage = (page) => {
+
         setPage(page)
+        console.log(totalPages,page)
     }
     return (
         <div className="App">
