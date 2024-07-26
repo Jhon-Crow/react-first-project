@@ -4,11 +4,9 @@ import {getPagesArray} from "../../../utils/pages.js";
 const Pagination = ({totalPages, page, changePage}) => {
     let pagesArray = getPagesArray(totalPages);
 
-
     if (page > totalPages) {
         page = totalPages
     }
-
 
     return (
         <div className='page-wrapper'>

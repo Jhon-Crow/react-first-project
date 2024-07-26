@@ -12,6 +12,7 @@
 
 .App {
     width: 30rem;
+    padding-bottom: 8rem;
 }
 
 .post__btns{
@@ -51,9 +52,16 @@
 }
 
 .page-wrapper{
+    background: rgba(255, 255, 255, 0.74);
     margin-top: 30px;
     display: flex;
     gap: .3rem;
+    bottom: 0;
+    left: auto;
+    right: 23vw;
+    padding: 0 2rem 5rem ;
+    width: 32rem;
+    flex-wrap: wrap;
 }
 
 .page{

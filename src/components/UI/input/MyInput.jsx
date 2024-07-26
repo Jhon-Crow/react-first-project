@@ -11,7 +11,6 @@ const MyInput = React.forwardRef((props, ref) => {
 
     const onTextChange = (e) => {
         setTextValue(e.target.value)
-        console.log(textValue)
     }
 
 
