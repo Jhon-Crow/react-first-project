@@ -33,6 +33,19 @@ function Posts() {
         setTotalPages(getPageCount(totalCount, limit))
     })
 
+    const scrollIntoViewPost = (page) => {
+        let postToScrollId;
+        if (page === 0) {
+            return null
+        }
+        if (page === 1) {
+            postToScrollId = 1
+        } else {
+            postToScrollId = ((page - 1) * Number(limit)) + 1
+        }
+        const element = document.getElementById(String(postToScrollId));
+        element.scrollIntoView({ behavior: 'smooth' });
+    }
 
     const lastElement = useRef() //получаем посл элем
 
@@ -58,7 +71,9 @@ function Posts() {
 
     const changePage = (page) => {
         setPage(page)
+        scrollIntoViewPost(page)
     }
+
     return (
         <div className="App">
             <MyButton style={{marginTop: '2rem'}} onClick={() => setModal(true)}>
@@ -92,7 +107,8 @@ function Posts() {
             <Pagination
                 page={page}
                 changePage={changePage}
-                totalPages={totalPages} />
+                totalPages={totalPages}
+            />
             <ScrollTopButton className={'scroll-top-button'}/>
         </div>
     );

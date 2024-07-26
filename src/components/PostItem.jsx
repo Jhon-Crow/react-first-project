@@ -5,7 +5,9 @@ import { useNavigate } from 'react-router-dom';
 const PostItem = (props) => {
     const router = useNavigate();
     return (
-        <div className='post'>
+        <div className='post'
+            id={props.post.id}
+        >
             <div className="post__content">
                 <strong>{props.post.id}. {props.post.title}</strong>
                 <div>

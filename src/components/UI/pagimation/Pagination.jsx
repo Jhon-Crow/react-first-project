@@ -5,9 +5,9 @@ const Pagination = ({totalPages, page, changePage}) => {
     let pagesArray = getPagesArray(totalPages);
 
 
-            if (page > totalPages) {
-                page = totalPages
-            }
+    if (page > totalPages) {
+        page = totalPages
+    }
 
 
     return (
