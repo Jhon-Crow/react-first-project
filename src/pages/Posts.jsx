@@ -39,30 +39,16 @@ function Posts() {
     useObserver(lastElement, page <= totalPages, isPostsLoading, () => {
         setPage(page + 1)
         fetchPosts(limit, page)
-        // console.log(totalPages,page)
-        // console.log(totalPages)
-        // console.log(posts)
     })
 
     useEffect(() => { // колбек
         setPosts([]);
         setPage(1)
         fetchPosts(limit, page)
-        // console.log(limit,page)
-        // console.log(posts)
     }, [limit]) //массив зависимостей,
 
-    // useEffect(() => {
-    //     setPosts([]);
-    //     setPage(1);
-    //     if (page!== 1) {
-    //         changePage(1);
-    //     }
-    //     fetchPosts(limit, page)
-    // }, [limit])
-
     const createPost = (newPost)=> {
-        setPosts([...posts, newPost])
+        setPosts([newPost, ...posts])
         setModal(false)
     }
 
@@ -79,7 +65,7 @@ function Posts() {
                 Create post
             </MyButton>
             <MyModal visible={modal} setVisible={setModal}>
-                <PostForm create={createPost}/>
+                <PostForm create={createPost} posts={posts}/>
             </MyModal>
             <hr style={{margin: '15px 0'}}/>
             <PostFilter

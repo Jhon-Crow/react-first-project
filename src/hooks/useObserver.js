@@ -2,7 +2,6 @@ import {useEffect, useRef} from "react";
 
 export const useObserver = (ref, canLoad, isLoading, callback) => {
     const observer = useRef();
-
     useEffect(() => {
         if(isLoading) return; // если грузится то не создаём
         if(observer.current) observer.current.disconnect(); //отключаем старый

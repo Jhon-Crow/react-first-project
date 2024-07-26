@@ -14,12 +14,6 @@
     width: 30rem;
 }
 
-.scroll-top-button {
-    position: fixed;
-    bottom: 10px;
-    right: 20px;
-}
-
 .post__btns{
     display: flex;
     flex-direction: column;
