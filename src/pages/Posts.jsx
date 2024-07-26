@@ -13,6 +13,7 @@ import {getPageCount} from "../utils/pages.js";
 import Pagination from "../components/UI/pagimation/Pagination.jsx";
 import {useObserver} from "../hooks/useObserver";
 import MySelect from "../components/UI/select/MySelect";
+import ScrollTopButton from "../components/UI/ScrollTopButton/ScrollTopButton";
 
 function Posts() {
     const [posts, setPosts] = useState([
@@ -70,9 +71,7 @@ function Posts() {
     }
 
     const changePage = (page) => {
-
         setPage(page)
-        console.log(totalPages,page)
     }
     return (
         <div className="App">
@@ -108,6 +107,7 @@ function Posts() {
                 page={page}
                 changePage={changePage}
                 totalPages={totalPages} />
+            <ScrollTopButton className={'scroll-top-button'}/>
         </div>
     );
 }
